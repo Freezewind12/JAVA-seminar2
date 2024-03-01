@@ -1,6 +1,8 @@
 package service;
 
+import model.Course;
 import model.Degree;
+import model.Grade;
 import model.Professor;
 import model.Student;
 
@@ -17,6 +19,15 @@ public class MainService {
 		System.out.println(st1);
 		Student st2 = new Student("Igors", "Goncarovs");
 		System.out.println(st2);
+		Course cr1 = new Course();
+		System.out.println(cr1);
+		Course cr2 = new Course("Java", 4, pr2);
+		System.out.println(cr2);
+		Grade gr1 = new Grade();
+		System.out.println(gr1);
+		Grade gr2 = new Grade(10, st2, cr2);
+		System.out.println(gr2);
+		
 	}
 
 }
