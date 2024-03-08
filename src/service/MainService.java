@@ -3,6 +3,8 @@ package service;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.sound.sampled.Port;
+
 import model.Course;
 import model.Degree;
 import model.Grade;
@@ -20,7 +22,7 @@ public class MainService {
 		Professor pr1 = new Professor();
 		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg);
 		Professor pr3 = new Professor("Estere", "Vitole", Degree.mg);
-		Professor pr4 = new Professor("Jesus", "Montez", Degree.mg);
+		Professor pr4 = new Professor("Jesus", "Montez", Degree.phd);
 		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
 		Student st1 = new Student();
 		Student st2 = new Student("Igors", "Goncarovs");
@@ -68,6 +70,8 @@ public class MainService {
 			System.out.println("Weighted average grade for " + st2.getName() + " " + st2.getSurname() + " is "+ CAGforStudentsWeighted(st2));
 			System.out.println("Average grade for " + cr3.getTitle() + " is "+ CAGforCourse(cr3));
 			System.out.println(pr4.getName() + " " + pr4.getSurname() + " leads " + ProfCourseCount(pr4) + " courses");
+			System.out.println("There are " + GradeSmaller4(cr5) + " grades lower than 4 in " + cr5.getTitle() + " course");
+			System.out.println("There are " + howManyProfHavePHD() + " professors with PhD");
 			System.out.println("---------------------------------------");
 			sortStudents();
 			for(Student tempStudent: allStudents) {
@@ -147,5 +151,28 @@ public class MainService {
 				}
 			}
 		}
+	}
+	public static float GradeSmaller4(Course course) throws Exception {
+		if(course == null) throw new Exception("Problems with input");
+		
+		int howMany = 0;
+		
+		for(Grade tempGrade : allGrades) {
+			if (tempGrade.getCourse().equals(course)) {
+				if(tempGrade.getValue() > 4) {
+					howMany++;
+				}
+			}
+		}	
+		return howMany;
+	}
+	public static int howManyProfHavePHD() {
+		int howMany = 0;
+		for(Professor tempPr: allProfessors) {
+			if(tempPr.getProfDegree().equals(Degree.phd)) {
+				howMany++;
+			}
+		}
+		return howMany;
 	}
 }
