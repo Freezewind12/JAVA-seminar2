@@ -19,18 +19,31 @@ public class MainService {
 	public static void main(String[] args) {	
 		Professor pr1 = new Professor();
 		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg);
-		Professor pr3 = new Professor("Estere", "Vitol", Degree.mg);
-		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3));
+		Professor pr3 = new Professor("Estere", "Vitole", Degree.mg);
+		Professor pr4 = new Professor("Jesus", "Montez", Degree.mg);
+		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
 		Student st1 = new Student();
-		allStudents.add(st1);
 		Student st2 = new Student("Igors", "Goncarovs");
-		allStudents.addAll(Arrays.asList(st1,st2));
+		Student st3 = new Student("Andrii", "Zaporozhec");
+		Student st4 = new Student("Anton", "Volkov");
+		allStudents.addAll(Arrays.asList(st1,st2,st3,st4));
 		Course cr1 = new Course();
 		Course cr2 = new Course("Java", 4, pr2);
-		allCourses.addAll(Arrays.asList(cr1,cr2));
+		Course cr3 = new Course("Math analysis", 2, pr4);
+		Course cr4 = new Course("LAAG", 2, pr4);
+		Course cr5 = new Course("Discrete math", 2, pr4);
+		allCourses.addAll(Arrays.asList(cr1,cr2,cr3,cr4,cr5));
 		Grade gr1 = new Grade();
-		Grade gr2 = new Grade(10, st2, cr2);
-		allGrades.addAll(Arrays.asList(gr1,gr2));
+		Grade gr2 = new Grade(8, st2, cr3);
+		Grade gr3 = new Grade(9, st2, cr4);
+		Grade gr4 = new Grade(10, st2, cr5);
+		Grade gr5 = new Grade(2, st3, cr3);
+		Grade gr6 = new Grade(10, st3, cr4);
+		Grade gr7 = new Grade(2, st3, cr5);
+		Grade gr8 = new Grade(10, st4, cr3);
+		Grade gr9 = new Grade(2, st4, cr4);
+		Grade gr10 = new Grade(10, st4, cr5);
+		allGrades.addAll(Arrays.asList(gr1,gr2,gr3,gr4,gr5,gr6,gr7,gr8,gr9,gr10));
 		
 		System.out.println("---------------------------------------");
 		
@@ -51,14 +64,22 @@ public class MainService {
 		}
 		System.out.println("---------------------------------------");
 		try {
-			System.out.println("Average grade for " + st2.getName() + " " + st2.getSurname() + " is "+ CalculateAverageGradeForStudents(st2));
+			System.out.println("Average grade for " + st2.getName() + " " + st2.getSurname() + " is "+ CAGforStudents(st2));
+			System.out.println("Weighted average grade for " + st2.getName() + " " + st2.getSurname() + " is "+ CAGforStudentsWeighted(st2));
+			System.out.println("Average grade for " + cr3.getTitle() + " is "+ CAGforCourse(cr3));
+			System.out.println(pr4.getName() + " " + pr4.getSurname() + " leads " + ProfCourseCount(pr4) + " courses");
+			System.out.println("---------------------------------------");
+			sortStudents();
+			for(Student tempStudent: allStudents) {
+				System.out.println("Average grade for " + tempStudent.getName() + " " + tempStudent.getSurname() + " is "+ CAGforStudents(tempStudent));
+			}
 			}
 		catch(Exception e) {
 		
 		System.out.println(e);
 		}
 	}
-	public static float CalculateAverageGradeForStudents(Student student) throws Exception {
+	public static float CAGforStudents(Student student) throws Exception {
 		if(student == null) throw new Exception("Problems with input");
 		
 		float sum = 0;
@@ -71,5 +92,60 @@ public class MainService {
 			}
 		}	
 		return sum/howMany;
+	}
+	
+	public static float CAGforStudentsWeighted(Student student) throws Exception {
+		if(student == null) throw new Exception("Problems with input");
+		
+		float sum = 0;
+		int howManyCP = 0;
+		
+		for(Grade tempGrade : allGrades) {
+			if (tempGrade.getStud().equals(student)) {
+				sum = sum + tempGrade.getValue() * tempGrade.getCourse().getCreditPoints();
+				howManyCP = howManyCP + tempGrade.getCourse().getCreditPoints();
+			}
+		}	
+		return sum/howManyCP;
+	}
+	public static float CAGforCourse(Course course) throws Exception {
+		if(course == null) throw new Exception("Problems with input");
+		
+		float sum = 0;
+		int howMany = 0;
+		
+		for(Grade tempGrade : allGrades) {
+			if (tempGrade.getCourse().equals(course)) {
+				sum = sum + tempGrade.getValue();
+				howMany++;
+			}
+		}	
+		return sum/howMany;
+	}
+	public static int ProfCourseCount(Professor professor) throws Exception {
+		if(professor == null) throw new Exception("Problems with input");
+		
+		int howMany = 0;
+		
+		for(Course tempCourse : allCourses) {
+			if (tempCourse.getProf().equals(professor)) {
+				howMany++;
+			}
+		}	
+		return howMany;
+	}
+	public static void sortStudents() throws Exception {
+		for(int i = 0; i < allStudents.size(); i++) {
+			for(int j = 0; j < allStudents.size(); j++) {
+				Student tempI = allStudents.get(i);
+				Student tempJ = allStudents.get(j);
+				if(CAGforStudents(tempJ) < CAGforStudents(tempI)) {
+					Student temp = allStudents.get(i);
+					allStudents.set(i, allStudents.get(j));
+					allStudents.set(j, temp);
+					
+				}
+			}
+		}
 	}
 }
