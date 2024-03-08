@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.Course;
 import model.Degree;
@@ -13,35 +14,23 @@ public class MainService {
 	private static ArrayList<Student> allStudents = new ArrayList<Student>();
 	private static ArrayList<Course> allCourses = new ArrayList<Course>();
 	private static ArrayList<Grade> allGrades = new ArrayList<Grade>();
+	
 
 	public static void main(String[] args) {	
 		Professor pr1 = new Professor();
-		System.out.println(pr1);
-		allProfessors.add(pr1);
 		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg);
-		System.out.println(pr2);
-		allProfessors.add(pr2);
 		Professor pr3 = new Professor("Estere", "Vitol", Degree.mg);
-		System.out.println(pr3);
-		allProfessors.add(pr3);
+		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3));
 		Student st1 = new Student();
 		allStudents.add(st1);
-		System.out.println(st1);
 		Student st2 = new Student("Igors", "Goncarovs");
-		System.out.println(st2);
-		allStudents.add(st2);
+		allStudents.addAll(Arrays.asList(st1,st2));
 		Course cr1 = new Course();
-		System.out.println(cr1);
-		allCourses.add(cr1);
 		Course cr2 = new Course("Java", 4, pr2);
-		System.out.println(cr2);
-		allCourses.add(cr2);
+		allCourses.addAll(Arrays.asList(cr1,cr2));
 		Grade gr1 = new Grade();
-		System.out.println(gr1);
-		allGrades.add(gr1);
 		Grade gr2 = new Grade(10, st2, cr2);
-		System.out.println(gr2);
-		allGrades.add(gr2);
+		allGrades.addAll(Arrays.asList(gr1,gr2));
 		
 		System.out.println("---------------------------------------");
 		
@@ -61,6 +50,26 @@ public class MainService {
 			System.out.println(tempGrade);
 		}
 		System.out.println("---------------------------------------");
+		try {
+			System.out.println("Average grade for " + st2.getName() + " " + st2.getSurname() + " is "+ CalculateAverageGradeForStudents(st2));
+			}
+		catch(Exception e) {
 		
+		System.out.println(e);
+		}
+	}
+	public static float CalculateAverageGradeForStudents(Student student) throws Exception {
+		if(student == null) throw new Exception("Problems with input");
+		
+		float sum = 0;
+		int howMany = 0;
+		
+		for(Grade tempGrade : allGrades) {
+			if (tempGrade.getStud().equals(student)) {
+				sum = sum + tempGrade.getValue();
+				howMany++;
+			}
+		}	
+		return sum/howMany;
 	}
 }
