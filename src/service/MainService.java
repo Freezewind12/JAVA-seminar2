@@ -81,6 +81,12 @@ public class MainService {
 			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("291003-21637"));
 			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("3222262-71222"));
 			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("1488228-1337666"));
+			System.out.println("---------------------------------------");
+			createStudent("Darja", "Fedotova", "01052003-21632");
+			deleteStudentByPersonCode("01052003-21632");
+			updateStudentByPersonCode("Igor", "Goncarov", "291003-21637");
+			for(Student tempStudent : allStudents) {
+				System.out.println(tempStudent);}
 			}
 		catch(Exception e) {
 		
@@ -208,5 +214,19 @@ public class MainService {
 			}
 		}
 		throw new Exception("Student is not found");
+	}
+	public static void deleteStudentByPersonCode(String persCode) throws Exception {
+		if(persCode == null) throw new Exception("Problems with input args");
+		
+		
+		for(Student tempSt: allStudents) {
+			if(tempSt.getPersCode().equals(persCode)) {
+				allStudents.remove(tempSt);
+				return;
+			}
+		}
+		
+		throw new Exception("Student is not found");
+		
 	}
 }
