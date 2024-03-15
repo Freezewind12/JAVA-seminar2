@@ -20,9 +20,9 @@ public class MainService {
 
 	public static void main(String[] args) {	
 		Professor pr1 = new Professor();
-		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg);
-		Professor pr3 = new Professor("Estere", "Vitole", Degree.mg);
-		Professor pr4 = new Professor("Jesus", "Montez", Degree.phd);
+		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg, "123456-111111");
+		Professor pr3 = new Professor("Estere", "Vitole", Degree.mg, "111111-123456");
+		Professor pr4 = new Professor("Jesus", "Montez", Degree.phd, "111111-111111");
 		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
 		Student st1 = new Student();
 		Student st2 = new Student("Igors", "Goncarovs", "291003-21637");
