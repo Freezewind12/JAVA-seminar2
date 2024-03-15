@@ -25,9 +25,9 @@ public class MainService {
 		Professor pr4 = new Professor("Jesus", "Montez", Degree.phd);
 		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
 		Student st1 = new Student();
-		Student st2 = new Student("Igors", "Goncarovs");
-		Student st3 = new Student("Andrii", "Zaporozhec");
-		Student st4 = new Student("Anton", "Volkov");
+		Student st2 = new Student("Igors", "Goncarovs", "291003-21637");
+		Student st3 = new Student("Andrii", "Zaporozhec", "3222262-71222");
+		Student st4 = new Student("Anton", "Volkov", "1488228-1337666");
 		allStudents.addAll(Arrays.asList(st1,st2,st3,st4));
 		Course cr1 = new Course();
 		Course cr2 = new Course("Java", 4, pr2);
@@ -77,6 +77,10 @@ public class MainService {
 			for(Student tempStudent: allStudents) {
 				System.out.println("Average grade for " + tempStudent.getName() + " " + tempStudent.getSurname() + " is "+ CAGforStudents(tempStudent));
 			}
+			System.out.println("---------------------------------------");
+			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("291003-21637"));
+			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("3222262-71222"));
+			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("1488228-1337666"));
 			}
 		catch(Exception e) {
 		
@@ -174,5 +178,17 @@ public class MainService {
 			}
 		}
 		return howMany;
+	}
+	public static Student retriveStudentByPersonCode(String personCode) throws Exception{
+		if(personCode == null) throw new Exception("Problems with input args");
+		for(Student tempSt: allStudents) {
+			if(tempSt.getPersCode().equals(personCode)) {
+				return tempSt;
+			}
+		}
+		throw new Exception("Student not found");
+	}
+	public static void createStudent(String name, String surname, String persCode) {
+		
 	}
 }

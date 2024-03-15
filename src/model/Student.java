@@ -4,6 +4,7 @@ public class Student {
 	private long stID;
 	private String name;
 	private String surname;
+	private String persCode;
 	
 	private static long counter = 1000;
 	
@@ -33,22 +34,34 @@ public class Student {
 		else
 			this.surname = "Undefinied";
 	}
+	public String getPersCode() {
+		return persCode;
+	}
+	public void setPersCode(String persCode) {
+		if(persCode != null  && persCode.matches("[0-9]{5,9}[-]{1}[0-9]{5,9}"))
+			this.persCode = persCode;
+		else
+			this.persCode = "Undefinied";;
+	}
 	//Constructors
 	public Student() {
 		setpID();
 		setName("Name");
 		setSurname("Surname");
+		setPersCode("000000-00000");
 	}
 	
-	public Student(String name, String surname) {
+	public Student(String name, String surname, String persCode) {
 		setpID();
 		setName(name);
 		setSurname(surname);
+		setPersCode(persCode);
 	}
 	//4. toString
 		@Override
 		public String toString()
 		{
-			return stID + ": " + name + " " + surname;
+			return stID + ": " + name + " " + surname + " (" + persCode + ")";
 		}
+		
 }
