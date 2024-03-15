@@ -179,16 +179,34 @@ public class MainService {
 		}
 		return howMany;
 	}
-	public static Student retriveStudentByPersonCode(String personCode) throws Exception{
-		if(personCode == null) throw new Exception("Problems with input args");
+	public static Student retriveStudentByPersonCode(String persCode) throws Exception{
+		if(persCode == null) throw new Exception("Problems with input args");
 		for(Student tempSt: allStudents) {
-			if(tempSt.getPersCode().equals(personCode)) {
+			if(tempSt.getPersCode().equals(persCode)) {
 				return tempSt;
 			}
 		}
 		throw new Exception("Student not found");
 	}
-	public static void createStudent(String name, String surname, String persCode) {
-		
+	public static void createStudent(String name, String surname, String persCode) throws Exception{
+		if(name == null || surname == null || persCode == null) throw new Exception("Problems with input args");
+		for(Student tempSt: allStudents) {
+			if(tempSt.getPersCode().equals(persCode)) {
+				throw new Exception("Student is already in the system");
+			}
+		}
+		Student student = new Student(name, surname, persCode);
+		allStudents.add(student);
+	}
+	public static void updateStudentByPersonCode(String name, String surname, String persCode) throws Exception{
+		if(name == null || surname == null || persCode == null) throw new Exception("Problems with input args");
+		for(Student tempSt: allStudents) {
+			if(tempSt.getPersCode().equals(persCode)) {
+				tempSt.setName(name);
+				tempSt.setSurname(surname);
+				return;
+			}
+		}
+		throw new Exception("Student is not found");
 	}
 }
