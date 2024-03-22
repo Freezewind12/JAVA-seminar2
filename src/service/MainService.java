@@ -29,9 +29,6 @@ public class MainService {
 		Student st3 = new Student("Andrii", "Zaporozhec", "3222262-71222");
 		Student st4 = new Student("Anton", "Volkov", "1488228-1337666");
 		allPersons.addAll(Arrays.asList(st1,st2,st3,st4));
-		//for(Person tempP : allPersons) {
-		//	System.out.println(tempP);
-		//}
 		Course cr1 = new Course();
 		Course cr2 = new Course("Java", 4, pr2);
 		Course cr3 = new Course("Math analysis", 2, pr4);
@@ -162,18 +159,17 @@ public class MainService {
 	}
 	public static void sortStudents() throws Exception {
 		for(Person tempP: allPersons) {
-			if(tempP instanceof Student) {
-				
-		for(int i = 0; i < allPersons.size(); i++) {
-			for(int j = 0; j < allPersons.size(); j++) {
-				Person tempI = allPersons.get(i);
-				Person tempJ = allPersons.get(j);
-				if(CAGforStudents(tempJ) < CAGforStudents(tempI)) {
-					Person temp = allPersons.get(i);
-					allPersons.set(i, allPersons.get(j));
-					allPersons.set(j, temp);
-				}
-				}	
+			if(tempP instanceof Student) {	
+				for(int i = 0; i < allPersons.size(); i++) {
+					for(int j = 0; j < allPersons.size(); j++) {
+						Person tempI = allPersons.get(i);
+						Person tempJ = allPersons.get(j);
+						if(CAGforStudents(tempJ) < CAGforStudents(tempI)) {
+							Person temp = allPersons.get(i);
+							allPersons.set(i, allPersons.get(j));
+							allPersons.set(j, temp);
+						}
+					}	
 				}
 			}
 		}
