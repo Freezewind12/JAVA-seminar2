@@ -8,12 +8,12 @@ import javax.sound.sampled.Port;
 import model.Course;
 import model.Degree;
 import model.Grade;
+import model.Person;
 import model.Professor;
 import model.Student;
 
 public class MainService {
-	private static ArrayList<Professor> allProfessors = new ArrayList<Professor>();
-	private static ArrayList<Student> allStudents = new ArrayList<Student>();
+	private static ArrayList<Person> allPersons = new ArrayList<Person>();
 	private static ArrayList<Course> allCourses = new ArrayList<Course>();
 	private static ArrayList<Grade> allGrades = new ArrayList<Grade>();
 	
@@ -23,12 +23,15 @@ public class MainService {
 		Professor pr2 = new Professor("Karine", "Skirmante", Degree.mg, "123456-111111");
 		Professor pr3 = new Professor("Estere", "Vitole", Degree.mg, "111111-123456");
 		Professor pr4 = new Professor("Jesus", "Montez", Degree.phd, "111111-111111");
-		allProfessors.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
+		allPersons.addAll(Arrays.asList(pr1,pr2,pr3,pr4));
 		Student st1 = new Student();
 		Student st2 = new Student("Igors", "Goncarovs", "291003-21637");
 		Student st3 = new Student("Andrii", "Zaporozhec", "3222262-71222");
 		Student st4 = new Student("Anton", "Volkov", "1488228-1337666");
-		allStudents.addAll(Arrays.asList(st1,st2,st3,st4));
+		allPersons.addAll(Arrays.asList(st1,st2,st3,st4));
+		//for(Person tempP : allPersons) {
+		//	System.out.println(tempP);
+		//}
 		Course cr1 = new Course();
 		Course cr2 = new Course("Java", 4, pr2);
 		Course cr3 = new Course("Math analysis", 2, pr4);
@@ -49,12 +52,17 @@ public class MainService {
 		
 		System.out.println("---------------------------------------");
 		
-		for(Professor tempProfessor : allProfessors) {
-			System.out.println(tempProfessor);
+		for(Person tempP: allPersons) {
+			if(tempP instanceof Professor) {
+			System.out.println(tempP);
+			}
 		}
+		
 		System.out.println("---------------------------------------");
-		for(Student tempStudent : allStudents) {
-			System.out.println(tempStudent);
+		for(Person tempP: allPersons) {
+			if(tempP instanceof Student) {
+			System.out.println(tempP);
+			}
 		}
 		System.out.println("---------------------------------------");
 		for(Course tempCourse : allCourses) {
@@ -74,33 +82,37 @@ public class MainService {
 			System.out.println("There are " + howManyProfHavePHD() + " professors with PhD");
 			System.out.println("---------------------------------------");
 			sortStudents();
-			for(Student tempStudent: allStudents) {
-				System.out.println("Average grade for " + tempStudent.getName() + " " + tempStudent.getSurname() + " is "+ CAGforStudents(tempStudent));
+			for(Person tempP: allPersons) {
+				if(tempP instanceof Student) {
+					System.out.println("Average grade for " + tempP.getName() + " " + tempP.getSurname() + " is "+ CAGforStudents(tempP));
+				}
 			}
 			System.out.println("---------------------------------------");
-			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("291003-21637"));
-			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("3222262-71222"));
-			System.out.println("Retrive student by persCode: " + retriveStudentByPersonCode("1488228-1337666"));
+			System.out.println("Retrive student by persCode: " + retrivePersonByPersonCode("291003-21637"));
+			System.out.println("Retrive student by persCode: " + retrivePersonByPersonCode("3222262-71222"));
+			System.out.println("Retrive student by persCode: " + retrivePersonByPersonCode("1488228-1337666"));
 			System.out.println("---------------------------------------");
 			createStudent("Darja", "Fedotova", "01052003-21632");
-			deleteStudentByPersonCode("01052003-21632");
-			updateStudentByPersonCode("Igor", "Goncarov", "291003-21637");
-			for(Student tempStudent : allStudents) {
-				System.out.println(tempStudent);}
+			deletePersonByPersonCode("01052003-21632");
+			updatePersonByPersonCode("Igor", "Goncarov", "291003-21637");
+			for(Person tempP: allPersons) {
+				if(tempP instanceof Student) {
+					System.out.println(tempP);}
 			}
+		}
 		catch(Exception e) {
 		
 		System.out.println(e);
 		}
 	}
-	public static float CAGforStudents(Student student) throws Exception {
-		if(student == null) throw new Exception("Problems with input");
+	public static float CAGforStudents(Person person) throws Exception {
+		if(person == null) throw new Exception("Problems with input");
 		
 		float sum = 0;
 		int howMany = 0;
 		
 		for(Grade tempGrade : allGrades) {
-			if (tempGrade.getStud().equals(student)) {
+			if (tempGrade.getStud().equals(person)) {
 				sum = sum + tempGrade.getValue();
 				howMany++;
 			}
@@ -149,15 +161,19 @@ public class MainService {
 		return howMany;
 	}
 	public static void sortStudents() throws Exception {
-		for(int i = 0; i < allStudents.size(); i++) {
-			for(int j = 0; j < allStudents.size(); j++) {
-				Student tempI = allStudents.get(i);
-				Student tempJ = allStudents.get(j);
+		for(Person tempP: allPersons) {
+			if(tempP instanceof Student) {
+				
+		for(int i = 0; i < allPersons.size(); i++) {
+			for(int j = 0; j < allPersons.size(); j++) {
+				Person tempI = allPersons.get(i);
+				Person tempJ = allPersons.get(j);
 				if(CAGforStudents(tempJ) < CAGforStudents(tempI)) {
-					Student temp = allStudents.get(i);
-					allStudents.set(i, allStudents.get(j));
-					allStudents.set(j, temp);
-					
+					Person temp = allPersons.get(i);
+					allPersons.set(i, allPersons.get(j));
+					allPersons.set(j, temp);
+				}
+				}	
 				}
 			}
 		}
@@ -178,35 +194,41 @@ public class MainService {
 	}
 	public static int howManyProfHavePHD() {
 		int howMany = 0;
-		for(Professor tempPr: allProfessors) {
-			if(tempPr.getProfDegree().equals(Degree.phd)) {
+		for(Person tempP: allPersons) {
+			if(tempP instanceof Professor) {
+				if(((Professor) tempP).getProfDegree().equals(Degree.phd)) {
 				howMany++;
 			}
 		}
+		}
 		return howMany;
+		
 	}
-	public static Student retriveStudentByPersonCode(String persCode) throws Exception{
+	public static Person retrivePersonByPersonCode(String persCode) throws Exception{
 		if(persCode == null) throw new Exception("Problems with input args");
-		for(Student tempSt: allStudents) {
-			if(tempSt.getPersCode().equals(persCode)) {
-				return tempSt;
+		for(Person tempP: allPersons) {
+			if(tempP.getPersCode().equals(persCode)) {
+				return tempP;
 			}
 		}
 		throw new Exception("Student not found");
 	}
+
 	public static void createStudent(String name, String surname, String persCode) throws Exception{
 		if(name == null || surname == null || persCode == null) throw new Exception("Problems with input args");
-		for(Student tempSt: allStudents) {
-			if(tempSt.getPersCode().equals(persCode)) {
+		for(Person tempP: allPersons) {
+			if(tempP instanceof Student && tempP.getPersCode().equals(persCode)) {
+			if(tempP.getPersCode().equals(persCode)) {
 				throw new Exception("Student is already in the system");
+				}
 			}
 		}
 		Student student = new Student(name, surname, persCode);
-		allStudents.add(student);
+		allPersons.add(student);
 	}
-	public static void updateStudentByPersonCode(String name, String surname, String persCode) throws Exception{
+	public static void updatePersonByPersonCode(String name, String surname, String persCode) throws Exception{
 		if(name == null || surname == null || persCode == null) throw new Exception("Problems with input args");
-		for(Student tempSt: allStudents) {
+		for(Person tempSt: allPersons) {
 			if(tempSt.getPersCode().equals(persCode)) {
 				tempSt.setName(name);
 				tempSt.setSurname(surname);
@@ -215,13 +237,11 @@ public class MainService {
 		}
 		throw new Exception("Student is not found");
 	}
-	public static void deleteStudentByPersonCode(String persCode) throws Exception {
-		if(persCode == null) throw new Exception("Problems with input args");
-		
-		
-		for(Student tempSt: allStudents) {
-			if(tempSt.getPersCode().equals(persCode)) {
-				allStudents.remove(tempSt);
+	public static void deletePersonByPersonCode(String persCode) throws Exception {
+		if(persCode == null) throw new Exception("Problems with input args");	
+		for(Person tempP: allPersons) {
+			if(tempP.getPersCode().equals(persCode)) {
+				allPersons.remove(tempP);
 				return;
 			}
 		}
